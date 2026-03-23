@@ -1,0 +1,9 @@
+﻿# 自定义代理规则（用于 _plus 配置）
+
+# Apple Intelligence / iCloud Private Relay
+apple.com
+icloud.com
+apple-relay.cloudflare.com
+apple-relay.fastly-edge.com
+cp4.cloudflare.com
+mzstatic.com

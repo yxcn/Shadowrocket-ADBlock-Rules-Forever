@@ -10,7 +10,9 @@ confs_names = [
     'sr_top500_banlist_ad',
     'sr_top500_banlist',
     'sr_top500_whitelist_ad',
+    'sr_top500_whitelist_ad_plus',
     'sr_top500_whitelist',
+    'sr_top500_whitelist_plus',
     'sr_adb',
     'sr_direct_banad',
     'sr_proxy_banad',
@@ -68,6 +70,7 @@ values['ad'] = getRulesStringFromFile('resultant/ad.list', 'Reject')
 values['manual_direct'] = getRulesStringFromFile('manual_direct.txt', 'Direct')
 values['manual_proxy']  = getRulesStringFromFile('manual_proxy.txt', 'Proxy')
 values['manual_reject'] = getRulesStringFromFile('manual_reject.txt', 'Reject')
+values['manual_custom_plus'] = getRulesStringFromFile('manual_custom_plus.txt', 'Proxy')
 
 values['gfwlist'] = getRulesStringFromFile('resultant/gfw.list', 'Proxy') \
                   + getRulesStringFromFile('manual_gfwlist.txt', 'Proxy')
@@ -77,7 +80,7 @@ values['gfwlist'] = getRulesStringFromFile('resultant/gfw.list', 'Proxy') \
 for conf_name in confs_names:
     file_template = open('template/'+conf_name+'.txt', 'r', encoding='utf-8')
     template = file_template.read()
-  
+
     if conf_name != 'sr_ad_only':
         template = str_head + template + str_foot
 
