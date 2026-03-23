@@ -183,6 +183,8 @@ INTP | Jack of all trades | I use Arch BTW
 
 规则地址：<https://shadowrules.teches.top/sr_top500_whitelist_ad_plus.conf>
 
+![二维码](https://shadowrules.teches.top/figure/sr_top500_whitelist_ad_plus.png)
+
 
 ## 黑名单过滤
 
@@ -220,6 +222,8 @@ INTP | Jack of all trades | I use Arch BTW
 - **Apple 相关域名强制代理**
 
 规则地址：<https://shadowrules.teches.top/sr_top500_whitelist_plus.conf>
+
+![二维码](https://shadowrules.teches.top/figure/sr_top500_whitelist_plus.png)
 
 
 ## 国内外划分 + 广告
