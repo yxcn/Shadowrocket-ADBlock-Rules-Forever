@@ -7,7 +7,7 @@
 # Plus: Apple / Microsoft 相关域名强制代理
 #
 
-{{manual_custom_plus}}
+{{manual_proxy_plus}}
 
 {{ad}}
 {{manual_reject}}

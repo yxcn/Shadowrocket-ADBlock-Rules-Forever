@@ -13,6 +13,10 @@ SKIP_FILES = set()
 def main():
     root_dir = os.path.join(os.path.dirname(__file__), '..')
     figure_dir = os.path.join(root_dir, 'figure')
+    # 清理旧二维码，避免已删除配置的残留
+    if os.path.exists(figure_dir):
+        for old_png in glob.glob(os.path.join(figure_dir, '*.png')):
+            os.remove(old_png)
     os.makedirs(figure_dir, exist_ok=True)
 
     conf_files = sorted(glob.glob(os.path.join(root_dir, '*.conf')))
@@ -26,7 +30,16 @@ def main():
         png_path = os.path.join(figure_dir, png_name)
 
         url = BASE_URL + conf_name
-        img = qrcode.make(url)
+        qr = qrcode.QRCode(
+            version=None,
+            error_correction=qrcode.constants.ERROR_CORRECT_M,
+            box_size=10,
+            border=4,
+        )
+        qr.add_data(url)
+        qr.make(fit=True)
+        img = qr.make_image(fill_color='black', back_color='white')
+        img = img.resize((400, 400))
         img.save(png_path)
         print(f'Generated: figure/{png_name} -> {url}')
 
