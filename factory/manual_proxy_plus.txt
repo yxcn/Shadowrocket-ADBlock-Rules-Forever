@@ -2,18 +2,43 @@
 
 # Apple Intelligence / iCloud Private Relay
 apple.com
+apple.cn
 icloud.com
+icloud.com.cn
+icloud-content.com
+cdn-apple.com
+apple-cloudkit.com
+apple-livephotoskit.com
+apzones.com
+apple-mapkit.com
+push.apple.com
 apple-relay.cloudflare.com
 apple-relay.fastly-edge.com
 cp4.cloudflare.com
 mzstatic.com
+networking.apple
+safebrowsing.apple
 
 # Microsoft 全球服务（避免国内 CDN 走直连）
 microsoft.com
 office.com
+office.net
 office365.com
 live.com
 outlook.com
 msn.com
 windows.com
 microsoftonline.com
+
+# Google / Gemini / Chrome 相关（避免国内线路误判直连）
+googleapis.com
+gstatic.com
+doubleclick.net
+
+# OpenAI / ChatGPT / Claude（避免中国大陆 CDN 误判直连）
+openai.com
+chatgpt.com
+oaistatic.com
+oaiusercontent.com
+anthropic.com
+claude.ai
