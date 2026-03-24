@@ -11,6 +11,10 @@ DOMAIN-SUFFIX,ampproject.org,PROXY # Google AMP issue#237
 
 {{manual_proxy}}
 
+# Google ASN（AS15169）兜底规则
+IP-CIDR,8.8.8.8/32,PROXY
+IP-CIDR,8.8.4.4/32,PROXY
+
 GEOIP,CN,DIRECT
 
 FINAL,proxy

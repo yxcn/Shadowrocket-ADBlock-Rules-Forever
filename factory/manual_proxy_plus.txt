@@ -30,10 +30,21 @@ msn.com
 windows.com
 microsoftonline.com
 
-# Google / Gemini / Chrome 相关（避免国内线路误判直连）
+# Google 全量代理（YouTube / Firebase / Analytics / Chrome）
+google.com
 googleapis.com
 gstatic.com
+googleusercontent.com
+googlevideo.com
+ggpht.com
+ytimg.com
+youtube.com
+withgoogle.com
 doubleclick.net
+app-analytics-services.com
+app-analytics-services-att.com
+firebase.com
+google-analytics.com
 
 # OpenAI / ChatGPT / Claude（避免中国大陆 CDN 误判直连）
 openai.com
