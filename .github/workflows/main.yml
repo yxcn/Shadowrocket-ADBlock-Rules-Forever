@@ -32,9 +32,6 @@ jobs:
           curl -O https://raw.githubusercontent.com/LOWERTOP/Shadowrocket/main/lazy.conf
           curl -O https://raw.githubusercontent.com/LOWERTOP/Shadowrocket/main/lazy_group.conf
 
-      - name: Remove docs before deploy
-        run: rm -rf "IOS Shadowrocket Config"
-
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
         with:
