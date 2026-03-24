@@ -244,6 +244,34 @@ INTP | Jack of all trades | I use Arch BTW
 ![二维码](https://johnshall.github.io/Shadowrocket-ADBlock-Rules-Forever/figure/sr_cnip.png)
 
 
+## 国内外划分 + 广告 + Apple / Microsoft 代理
+
+在国内外划分 + 广告过滤的基础上，将 Apple Intelligence / iCloud Private Relay / Microsoft 相关域名强制走代理，适合需要使用 Apple Intelligence、iCloud Private Relay、Microsoft 365 等服务的用户。
+
+- 直连：中国网站（GEOIP,CN）
+- 代理：默认代理其余的所有境外网站
+- 包含广告过滤
+- **Apple / Microsoft 相关域名强制代理**
+
+规则地址：<https://shadowrules.teches.top/sr_cnip_ad_plus.conf>
+
+![二维码](https://shadowrules.teches.top/figure/sr_cnip_ad_plus.png)
+
+
+## 国内外划分 + Apple / Microsoft 代理
+
+在国内外划分的基础上，将 Apple Intelligence / iCloud Private Relay / Microsoft 相关域名强制走代理。不包含广告过滤。
+
+- 直连：中国网站（GEOIP,CN）
+- 代理：默认代理其余的所有境外网站
+- 不包含广告过滤
+- **Apple / Microsoft 相关域名强制代理**
+
+规则地址：<https://shadowrules.teches.top/sr_cnip_plus.conf>
+
+![二维码](https://shadowrules.teches.top/figure/sr_cnip_plus.png)
+
+
 ## 直连去广告
 
 如果你想将 SR 作为 iOS 全局去广告工具，这个规则会对你有所帮助。
