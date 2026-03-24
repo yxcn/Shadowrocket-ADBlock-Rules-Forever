@@ -7,3 +7,13 @@ apple-relay.cloudflare.com
 apple-relay.fastly-edge.com
 cp4.cloudflare.com
 mzstatic.com
+
+# Microsoft 全球服务（避免国内 CDN 走直连）
+microsoft.com
+office.com
+office365.com
+live.com
+outlook.com
+msn.com
+windows.com
+microsoftonline.com

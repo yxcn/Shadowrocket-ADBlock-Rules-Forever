@@ -17,6 +17,7 @@ confs_names = [
     'sr_direct_banad',
     'sr_proxy_banad',
     'sr_cnip', 'sr_cnip_ad',
+    'sr_cnip_plus', 'sr_cnip_ad_plus',
     'sr_backcn', 'sr_backcn_ad',
     'sr_ad_only'
 ]

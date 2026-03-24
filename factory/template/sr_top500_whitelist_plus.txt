@@ -4,7 +4,7 @@
 # 直连：top500 网站中可直连的境外网站、中国网站
 # 代理：默认代理其余的所有境外网站
 # 不包含广告过滤
-# Plus: Apple Intelligence / iCloud Private Relay 相关域名强制代理
+# Plus: Apple / Microsoft 相关域名强制代理
 #
 
 {{manual_custom_plus}}
