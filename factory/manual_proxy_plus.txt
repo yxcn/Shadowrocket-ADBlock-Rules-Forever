@@ -2,9 +2,9 @@
 
 # Apple Intelligence / iCloud Private Relay
 apple.com
-apple.cn
+# apple.cn
 icloud.com
-icloud.com.cn
+# icloud.com.cn
 icloud-content.com
 cdn-apple.com
 apple-cloudkit.com
