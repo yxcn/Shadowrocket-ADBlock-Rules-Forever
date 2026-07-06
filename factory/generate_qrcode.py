@@ -39,7 +39,7 @@ def main():
         qr.add_data(url)
         qr.make(fit=True)
         img = qr.make_image(fill_color='black', back_color='white')
-        img = img.resize((400, 400))
+        img = img.resize((100, 100))
         img.save(png_path)
         print(f'Generated: figure/{png_name} -> {url}')
 
