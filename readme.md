@@ -46,6 +46,7 @@
 [白名单规则 + 去广告 + Apple代理](#白名单过滤--广告--apple代理) | 其他网站 + Apple 域名强制代理 | top500 网站中可直连的网站、中国网站
 [白名单规则 + Apple代理](#白名单过滤--apple代理) |   |
 [国内外划分 + 去广告](#国内外划分--广告) |  国外网站 | 中国网站
+[国内外划分 + 去广告 + Apple/Microsoft + DNS 防泄漏](#国内外划分--广告--apple--microsoft--dns-防泄漏) | 国外网站 + Apple/Microsoft 域名强制代理 | 中国网站
 [国内外划分](#国内外划分) |   |
 [全局直连 + 去广告](#直连去广告) | / | 全部
 [全局代理 + 去广告](#代理去广告) |  全部 | /
@@ -256,6 +257,21 @@ INTP | Jack of all trades | I use Arch BTW
 规则地址：<https://shadowrules.teches.top/sr_cnip_ad_plus.conf>
 
 ![二维码](https://shadowrules.teches.top/figure/sr_cnip_ad_plus.png)
+
+
+## 国内外划分 + 广告 + Apple / Microsoft + DNS 防泄漏
+
+在 `sr_cnip_ad_plus` 的基础上，额外启用 Shadowrocket None/TUN 兼容模式、私有 IP 应答、Cloudflare DNS 覆写和 Cloudflare/Google DoH 备用 DNS，适合需要减少 DNS 泄漏、降低国产 App 识别代理概率的场景。
+
+- 直连：中国网站（GEOIP,CN）
+- 代理：默认代理其余的所有境外网站
+- 包含广告过滤
+- **Apple / Microsoft 相关域名强制代理**
+- **DNS 防泄漏配置：`compatibility-mode = 3`、`private-ip-answer = true`、`1.1.1.1` / `1.0.0.1`、Cloudflare / Google DoH**
+
+规则地址：<https://shadowrules.teches.top/sr_cnip_ad_plus_dns.conf>
+
+![二维码](https://shadowrules.teches.top/figure/sr_cnip_ad_plus_dns.png)
 
 
 ## 国内外划分 + Apple / Microsoft 代理

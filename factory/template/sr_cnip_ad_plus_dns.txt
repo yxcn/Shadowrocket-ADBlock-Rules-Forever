@@ -1,0 +1,25 @@
+#
+# 国内外划分，对中国网站直连，外国网站代理。
+#
+# 包含广告过滤
+# Plus: Apple / Microsoft 相关域名强制代理
+# DNS: 启用 None/TUN 兼容模式、私有 IP 应答、Cloudflare DNS 和 Cloudflare/Google DoH 备用 DNS
+#
+
+{{manual_proxy_plus}}
+
+DOMAIN-SUFFIX,ampproject.org,PROXY # Google AMP issue#237
+
+{{manual_proxy}}
+
+{{manual_reject}}
+
+{{ad}}
+
+# Google ASN（AS15169）兜底规则
+IP-CIDR,8.8.8.8/32,PROXY
+IP-CIDR,8.8.4.4/32,PROXY
+
+GEOIP,CN,DIRECT
+
+FINAL,proxy

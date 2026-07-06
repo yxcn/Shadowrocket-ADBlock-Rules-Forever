@@ -17,7 +17,7 @@ confs_names = [
     'sr_direct_banad',
     'sr_proxy_banad',
     'sr_cnip', 'sr_cnip_ad',
-    'sr_cnip_plus', 'sr_cnip_ad_plus',
+    'sr_cnip_plus', 'sr_cnip_ad_plus', 'sr_cnip_ad_plus_dns',
     'sr_backcn', 'sr_backcn_ad',
     'sr_ad_only'
 ]
@@ -55,6 +55,7 @@ def getRulesStringFromFile(path, kind):
 
 # get head and foot
 str_head = open('template/sr_head.txt', 'r', encoding='utf-8').read()
+str_head_dns = open('template/sr_head_dns.txt', 'r', encoding='utf-8').read()
 str_foot = open('template/sr_foot.txt', 'r', encoding='utf-8').read()
 
 
@@ -83,7 +84,8 @@ for conf_name in confs_names:
     template = file_template.read()
 
     if conf_name != 'sr_ad_only':
-        template = str_head + template + str_foot
+        head = str_head_dns if conf_name == 'sr_cnip_ad_plus_dns' else str_head
+        template = head + template + str_foot
 
     file_output = open('../'+conf_name+'.conf', 'w', encoding='utf-8')
 
