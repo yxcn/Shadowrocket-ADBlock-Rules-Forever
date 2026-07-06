@@ -22,7 +22,7 @@
 
 - 黑名单由最新版 [GFWList](https://github.com/gfwlist/gfwlist) 自动转换；
 - 加入 [Greatfire Analyzer](https://github.com/Loyalsoldier/cn-blocked-domain) 检测到的屏蔽域名；
-- 自动转换最新版本的 `EasyList`, `Eaylist China`, `Peter Lowe 广告和隐私跟踪域名`，`乘风规则` 为 SR 规则，全面去除广告且去除重复；
+- 自动转换最新版本的 `EasyList`, `EasyList China`, `Peter Lowe 广告和隐私跟踪域名`，`乘风规则` 为 SR 规则，全面去除广告且去除重复；
 - 包括自定义的广告过滤规则，针对 iOS 端的网页广告、App 广告和视频广告；
 - 提供多个规则文件供大家自由选择或者自由切换使用；
 - 专门针对 ShadowRocket 开发，可以保证与 SR 的兼容性；
@@ -35,18 +35,18 @@
 
 ## 规则列表
 
-![规则选择指南](https://shadowrules.teches.top/figure/guide.png)
-
 规则 | 规定代理的网站 | 规定直连的网站
 --- | ----------- | -------------
 [黑名单规则 + 去广告](#黑名单过滤--广告) |  被墙的网站（GFWList） | 正常的网站
 [黑名单规则](#黑名单过滤) |   |
 [白名单规则 + 去广告](#白名单过滤--广告) | 其他网站 | top500 网站中可直连的网站、中国网站
 [白名单规则](#白名单过滤) |   |
-[白名单规则 + 去广告 + Apple代理](#白名单过滤--广告--apple代理) | 其他网站 + Apple 域名强制代理 | top500 网站中可直连的网站、中国网站
-[白名单规则 + Apple代理](#白名单过滤--apple代理) |   |
+[白名单规则 + 去广告 + Plus 代理](#白名单过滤--广告--plus-代理) | 其他网站 + Plus 域名强制代理 | top500 网站中可直连的网站、中国网站
+[白名单规则 + Plus 代理](#白名单过滤--plus-代理) | 其他网站 + Plus 域名强制代理 | top500 网站中可直连的网站、中国网站
 [国内外划分 + 去广告](#国内外划分--广告) |  国外网站 | 中国网站
-[国内外划分 + 去广告 + Apple/Microsoft + DNS 防泄漏](#国内外划分--广告--apple--microsoft--dns-防泄漏) | 国外网站 + Apple/Microsoft 域名强制代理 | 中国网站
+[国内外划分 + 去广告 + Plus 代理](#国内外划分--广告--plus-代理) | 国外网站 + Plus 域名强制代理 | 中国网站
+[国内外划分 + 去广告 + Plus 代理 + DNS 防泄漏](#国内外划分--广告--plus-代理--dns-防泄漏) | 国外网站 + Plus 域名强制代理 | 中国网站
+[国内外划分 + Plus 代理](#国内外划分--plus-代理) | 国外网站 + Plus 域名强制代理 | 中国网站
 [国内外划分](#国内外划分) |   |
 [全局直连 + 去广告](#直连去广告) | / | 全部
 [全局代理 + 去广告](#代理去广告) |  全部 | /
@@ -173,14 +173,14 @@ INTP | Jack of all trades | I use Arch BTW
 ![二维码](https://shadowrules.teches.top/figure/sr_top500_whitelist_ad.png)
 
 
-## 白名单过滤 + 广告 + Apple代理
+## 白名单过滤 + 广告 + Plus 代理
 
-在白名单 + 广告过滤的基础上，将 Apple Intelligence / iCloud Private Relay 相关域名强制走代理，适合需要使用 Apple Intelligence、iCloud Private Relay 等服务的用户。
+在白名单 + 广告过滤的基础上，将 Apple / Microsoft / Google / OpenAI / Claude 等 Plus 域名强制走代理，适合需要使用 Apple Intelligence、iCloud Private Relay、Microsoft 365、Google、AI 服务的用户。
 
 - 直连：top500 网站中可直连的境外网站、中国网站
 - 代理：默认代理其余的所有境外网站
 - 包含广告过滤
-- **Apple 相关域名强制代理**
+- **Plus 域名强制代理**
 
 规则地址：<https://shadowrules.teches.top/sr_top500_whitelist_ad_plus.conf>
 
@@ -213,14 +213,14 @@ INTP | Jack of all trades | I use Arch BTW
 ![二维码](https://shadowrules.teches.top/figure/sr_top500_whitelist.png)
 
 
-## 白名单过滤 + Apple代理
+## 白名单过滤 + Plus 代理
 
-在白名单的基础上，将 Apple Intelligence / iCloud Private Relay 相关域名强制走代理。不包含广告过滤。
+在白名单的基础上，将 Apple / Microsoft / Google / OpenAI / Claude 等 Plus 域名强制走代理。不包含广告过滤。
 
 - 直连：top500 网站中可直连的境外网站、中国网站
 - 代理：默认代理其余的所有境外网站
 - 不包含广告过滤
-- **Apple 相关域名强制代理**
+- **Plus 域名强制代理**
 
 规则地址：<https://shadowrules.teches.top/sr_top500_whitelist_plus.conf>
 
@@ -245,28 +245,28 @@ INTP | Jack of all trades | I use Arch BTW
 ![二维码](https://shadowrules.teches.top/figure/sr_cnip.png)
 
 
-## 国内外划分 + 广告 + Apple / Microsoft 代理
+## 国内外划分 + 广告 + Plus 代理
 
-在国内外划分 + 广告过滤的基础上，将 Apple Intelligence / iCloud Private Relay / Microsoft 相关域名强制走代理，适合需要使用 Apple Intelligence、iCloud Private Relay、Microsoft 365 等服务的用户。
+在国内外划分 + 广告过滤的基础上，将 Apple / Microsoft / Google / OpenAI / Claude 等 Plus 域名强制走代理，适合需要使用 Apple Intelligence、iCloud Private Relay、Microsoft 365、Google、AI 服务的用户。
 
 - 直连：中国网站（GEOIP,CN）
 - 代理：默认代理其余的所有境外网站
 - 包含广告过滤
-- **Apple / Microsoft 相关域名强制代理**
+- **Plus 域名强制代理**
 
 规则地址：<https://shadowrules.teches.top/sr_cnip_ad_plus.conf>
 
 ![二维码](https://shadowrules.teches.top/figure/sr_cnip_ad_plus.png)
 
 
-## 国内外划分 + 广告 + Apple / Microsoft + DNS 防泄漏
+## 国内外划分 + 广告 + Plus 代理 + DNS 防泄漏
 
 在 `sr_cnip_ad_plus` 的基础上，额外启用 Shadowrocket None/TUN 兼容模式、私有 IP 应答、Cloudflare DNS 覆写和 Cloudflare/Google DoH 备用 DNS，适合需要减少 DNS 泄漏、降低国产 App 识别代理概率的场景。
 
 - 直连：中国网站（GEOIP,CN）
 - 代理：默认代理其余的所有境外网站
 - 包含广告过滤
-- **Apple / Microsoft 相关域名强制代理**
+- **Plus 域名强制代理**
 - **DNS 防泄漏配置：`compatibility-mode = 3`、`private-ip-answer = true`、`1.1.1.1` / `1.0.0.1`、Cloudflare / Google DoH**
 
 规则地址：<https://shadowrules.teches.top/sr_cnip_ad_plus_dns.conf>
@@ -274,14 +274,14 @@ INTP | Jack of all trades | I use Arch BTW
 ![二维码](https://shadowrules.teches.top/figure/sr_cnip_ad_plus_dns.png)
 
 
-## 国内外划分 + Apple / Microsoft 代理
+## 国内外划分 + Plus 代理
 
-在国内外划分的基础上，将 Apple Intelligence / iCloud Private Relay / Microsoft 相关域名强制走代理。不包含广告过滤。
+在国内外划分的基础上，将 Apple / Microsoft / Google / OpenAI / Claude 等 Plus 域名强制走代理。不包含广告过滤。
 
 - 直连：中国网站（GEOIP,CN）
 - 代理：默认代理其余的所有境外网站
 - 不包含广告过滤
-- **Apple / Microsoft 相关域名强制代理**
+- **Plus 域名强制代理**
 
 规则地址：<https://shadowrules.teches.top/sr_cnip_plus.conf>
 
