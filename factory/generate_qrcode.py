@@ -5,7 +5,7 @@ import os
 import qrcode
 
 # GitHub Pages base URL (custom domain)
-BASE_URL = 'https://shadowrules.teches.top/'
+BASE_URL = 'https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/'
 
 # Skip these files (not Shadowrocket configs)
 SKIP_FILES = set()
