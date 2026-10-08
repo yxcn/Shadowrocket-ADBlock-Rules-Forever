@@ -61,6 +61,8 @@
 
 ## 规则使用方法
 
+可选的[国内服务 DNS 模块](IOS%20Shadowrocket%20Config/国内服务DNS模块.md)为抖音、豆包、微信、剪映等指定国内 DoH，独立于主配置安装和更新。
+
 方法一：用 Safari 或 ShadowRocket 扫描二维码即可。
 方法二：在 ShadowRocket 应用中，进入 [配置] 页面，点击右上角加号，将规则文件地址粘贴到 url 处，点击“下载”即可。
 

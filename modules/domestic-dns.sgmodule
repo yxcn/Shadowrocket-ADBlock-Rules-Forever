@@ -1,0 +1,67 @@
+#!name=Domestic-DNS
+#!desc=Use domestic DoH for selected Chinese services; keep the main DNS and traffic rules.
+# Version: 2026-10-08
+# Root domains and wildcard subdomains are listed separately.
+# These are DNS server mappings, not fixed service IP addresses.
+
+[Rule]
+# Only the two resolver endpoints are forced direct. Service traffic keeps its existing rules.
+DOMAIN,dns.alidns.com,DIRECT
+DOMAIN,doh.pub,DIRECT
+
+[Host]
+# Douyin
+douyin.com = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+*.douyin.com = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+douyinstatic.com = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+*.douyinstatic.com = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+douyinpic.com = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+*.douyinpic.com = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+douyinvod.com = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+*.douyinvod.com = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+
+# Doubao
+doubao.com = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+*.doubao.com = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+
+# WeChat, WeCom, QQ, Tencent Video and domestic Tencent resources
+qq.com = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+*.qq.com = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+wxqcloud.qq.com.cn = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+*.wxqcloud.qq.com.cn = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+qpic.cn = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+*.qpic.cn = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+gtimg.cn = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+*.gtimg.cn = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+cdn-go.cn = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+*.cdn-go.cn = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+
+# Yuanbao and Hunyuan
+yuanbao.tencent.com = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+*.yuanbao.tencent.com = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+hunyuan.tencent.com = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+*.hunyuan.tencent.com = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+
+# Domestic Jianying only; shared overseas CapCut APIs and CDN roots are excluded
+capcut.cn = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+*.capcut.cn = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+jianying.com = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+www.jianying.com = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+lv.ulikecam.com = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+*.lv.ulikecam.com = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+lf3-s.vlabstatic.com = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+lf3-lv-buz.vlabstatic.com = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+p11-seeyou-cn.byteimg.com = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+
+# DeepSeek
+deepseek.com = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+*.deepseek.com = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+
+# Domestic Qianwen and Tongyi; qwen.ai is excluded
+qianwen.com = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+*.qianwen.com = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+tongyi.com = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+*.tongyi.com = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+tongyi.aliyun.com = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+*.tongyi.aliyun.com = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+document-ai-public-prod.oss-cn-beijing.aliyuncs.com = server:https://dns.alidns.com/dns-query,https://doh.pub/dns-query
