@@ -3,7 +3,7 @@
 #
 # 包含广告过滤
 # Plus: Apple / Microsoft 相关域名强制代理
-# DNS: 启用 None/TUN 兼容模式、私有 IP 应答、Cloudflare DNS 和 Cloudflare/Google DoH 备用 DNS
+# DNS: 国内域名直连使用阿里/腾讯 DoH；默认 Cloudflare DNS 和 Cloudflare/Google DoH 备用 DNS
 #
 
 {{manual_proxy_plus}}
@@ -19,6 +19,19 @@ DOMAIN-SUFFIX,ampproject.org,PROXY # Google AMP issue#237
 # Google ASN（AS15169）兜底规则
 IP-CIDR,8.8.8.8/32,PROXY
 IP-CIDR,8.8.4.4/32,PROXY
+
+# 海外产品及共享接口例外优先于社区国内域名集
+DOMAIN-SUFFIX,capcut.com,PROXY
+DOMAIN-SUFFIX,capcutapi.com,PROXY
+DOMAIN-SUFFIX,capcutcdn.com,PROXY
+DOMAIN,lv-api.ulikecam.com,PROXY
+DOMAIN,lv-pc-api.ulikecam.com,PROXY
+DOMAIN-SUFFIX,qwen.ai,PROXY
+DOMAIN,dns.alidns.com,DIRECT
+DOMAIN,doh.pub,DIRECT
+# 社区域名集由上游维护；更新配置时同时检查远程规则集更新
+DOMAIN-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/ChinaMaxNoIP/ChinaMaxNoIP_Domain.list,DIRECT
+DOMAIN-SUFFIX,cn,DIRECT
 
 GEOIP,CN,DIRECT
 

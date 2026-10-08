@@ -61,7 +61,7 @@
 
 ## 规则使用方法
 
-可选的[国内服务 DNS 模块](IOS%20Shadowrocket%20Config/国内服务DNS模块.md)为抖音、豆包、微信、剪映等指定国内 DoH，独立于主配置安装和更新。
+`sr_cnip_ad_plus_dns.conf` 已集成社区国内域名规则集和国内直连 DNS。使用其他主配置时，可选用[国内服务 DNS 模块](IOS%20Shadowrocket%20Config/国内服务DNS模块.md)，为指定服务单独设置国内 DoH；该模块独立安装和更新。
 
 方法一：用 Safari 或 ShadowRocket 扫描二维码即可。
 方法二：在 ShadowRocket 应用中，进入 [配置] 页面，点击右上角加号，将规则文件地址粘贴到 url 处，点击“下载”即可。
@@ -263,13 +263,17 @@ INTP | Jack of all trades | I use Arch BTW
 
 ## 国内外划分 + 广告 + Plus 代理 + DNS 防泄漏
 
-在 `sr_cnip_ad_plus` 的基础上，额外启用 Shadowrocket None/TUN 兼容模式、私有 IP 应答、Cloudflare DNS 覆写和 Cloudflare/Google DoH 备用 DNS，适合需要减少 DNS 泄漏、降低国产 App 识别代理概率的场景。
+在 `sr_cnip_ad_plus` 的基础上，启用 Shadowrocket None/TUN 兼容模式、私有 IP 应答，并接入 [blackmatrix7 ChinaMaxNoIP 社区域名集](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Shadowrocket/ChinaMaxNoIP)。国内域名命中直连规则后使用阿里/腾讯 DoH，其他域名保留 Cloudflare DNS 和 Cloudflare/Google DoH 备用 DNS。
 
-- 直连：中国网站（GEOIP,CN）
+- 直连：社区国内域名集、`.cn` 后缀及 GEOIP,CN 兜底，受前面的手工代理与广告屏蔽规则约束
 - 代理：默认代理其余的所有境外网站
 - 包含广告过滤
 - **Plus 域名强制代理**
-- **DNS 防泄漏配置：`compatibility-mode = 3`、`private-ip-answer = true`、`1.1.1.1` / `1.0.0.1`、Cloudflare / Google DoH**
+- **国内直连 DNS：阿里 / 腾讯 DoH；默认与备用 DNS 保持 Cloudflare / Google**
+
+CapCut 海外域名、`qwen.ai`、`lv-api.ulikecam.com`、`lv-pc-api.ulikecam.com` 的代理例外优先于社区国内名单；ChatGPT、Claude 沿用 Plus 代理规则。共享 CDN 只能按域名判断，不能保证区分每个 App 的全部请求。只有通过域名规则判断为 DIRECT 的查询使用国内 Direct DNS；IP/GeoIP 规则及解析失败回退需单独核对日志。
+
+在 Shadowrocket 更新并使用本配置，确认远程 Rule Set URL 已更新后，可关闭 `Domestic-DNS` 并重连。保留模块文件可供其他主配置或回退使用。每日构建保留本 DNS 策略；社区域名内容通过规则集 URL 单独拉取，更新节点订阅不等于更新配置或规则集。验证请同时查看 DNS 与实际连接日志，不能仅凭配置名称或规则匹配判断 App 提速。
 
 规则地址：<https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/sr_cnip_ad_plus_dns.conf>
 

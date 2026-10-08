@@ -13,4 +13,6 @@ compatibility-mode = 3
 private-ip-answer = true
 dns-server = 1.1.1.1, 1.0.0.1
 fallback-dns-server = https://1.1.1.1/dns-query, https://dns.google/dns-query
+direct-dns-server = https://dns.alidns.com/dns-query, https://doh.pub/dns-query
+dns-direct-system = false
 [Rule]

@@ -4,6 +4,8 @@
 
 订阅地址：`https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/modules/domestic-dns.sgmodule`。
 
+当前 `sr_cnip_ad_plus_dns.conf` 主配置已集成社区国内域名集与阿里/腾讯直连 DNS。更新并启用该主配置、确认规则集和实际 DNS 日志正常后，可关闭本模块；模块保留供其他主配置或回退使用。本页列出的 24 个范围仅描述独立模块，主配置的社区名单覆盖范围不同。
+
 ## 用途与范围
 
 为明确列出的国内服务指定阿里和腾讯 DNS-over-HTTPS，改善因解析器位置导致的 CDN 选择差异。模块使用 `[Host]` 的 `server:` DNS 服务器映射，不固定服务 IP；只给两个 DNS 服务端点添加直连规则，保留主配置的默认 DNS、广告过滤和服务连接分流。
