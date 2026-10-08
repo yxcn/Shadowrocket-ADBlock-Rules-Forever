@@ -273,6 +273,8 @@ INTP | Jack of all trades | I use Arch BTW
 
 CapCut 海外域名、`qwen.ai`、`lv-api.ulikecam.com`、`lv-pc-api.ulikecam.com` 的代理例外优先于社区国内名单；ChatGPT、Claude 沿用 Plus 代理规则。共享 CDN 只能按域名判断，不能保证区分每个 App 的全部请求。只有通过域名规则判断为 DIRECT 的查询使用国内 Direct DNS；IP/GeoIP 规则及解析失败回退需单独核对日志。
 
+为衔接原 Domestic-DNS 覆盖，保留 `tongyi.aliyun.com` 及其子域名、`document-ai-public-prod.oss-cn-beijing.aliyuncs.com` 两项国内直连例外，不扩大到整个阿里云公共域名。
+
 在 Shadowrocket 更新并使用本配置，确认远程 Rule Set URL 已更新后，可关闭 `Domestic-DNS` 并重连。保留模块文件可供其他主配置或回退使用。每日构建保留本 DNS 策略；社区域名内容通过规则集 URL 单独拉取，更新节点订阅不等于更新配置或规则集。验证请同时查看 DNS 与实际连接日志，不能仅凭配置名称或规则匹配判断 App 提速。
 
 规则地址：<https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/sr_cnip_ad_plus_dns.conf>
