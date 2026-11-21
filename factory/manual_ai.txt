@@ -1,0 +1,9 @@
+# OpenAI / ChatGPT / Claude：交给 AI 手动分组，先于通用代理与国内域名规则匹配
+openai.com
+chatgpt.com
+oaistatic.com
+oaiusercontent.com
+anthropic.com
+claude.ai
+claude.com
+claudeusercontent.com

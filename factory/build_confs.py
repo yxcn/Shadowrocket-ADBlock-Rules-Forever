@@ -23,14 +23,14 @@ confs_names = [
 ]
 
 
-def getRulesStringFromFile(path, kind):
+def getRulesStringFromFile(path, kind, excluded=()):
     file = open(path, 'r', encoding='utf-8')
     contents = file.readlines()
     ret = ''
 
     for content in contents:
         content = content.strip('\r\n')
-        if not len(content):
+        if not len(content) or content in excluded:
             continue
 
         if content.startswith('#'):
@@ -73,6 +73,15 @@ values['manual_direct'] = getRulesStringFromFile('manual_direct.txt', 'Direct')
 values['manual_proxy']  = getRulesStringFromFile('manual_proxy.txt', 'Proxy')
 values['manual_reject'] = getRulesStringFromFile('manual_reject.txt', 'Reject')
 values['manual_proxy_plus'] = getRulesStringFromFile('manual_proxy_plus.txt', 'Proxy')
+values['manual_ai'] = getRulesStringFromFile('manual_ai.txt', 'AI')
+ai_domains = {
+    rule.split(',')[1]
+    for rule in values['manual_ai'].splitlines()
+    if rule.startswith('DOMAIN-SUFFIX,')
+}
+# Only the DNS Plus variant uses AI; other Plus configurations keep their policies.
+values['manual_proxy_plus_without_ai'] = getRulesStringFromFile(
+    'manual_proxy_plus.txt', 'Proxy', excluded=ai_domains)
 
 values['gfwlist'] = getRulesStringFromFile('resultant/gfw.list', 'Proxy') \
                   + getRulesStringFromFile('manual_gfwlist.txt', 'Proxy')

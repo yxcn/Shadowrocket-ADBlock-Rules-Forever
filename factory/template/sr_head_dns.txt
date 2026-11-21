@@ -15,4 +15,10 @@ dns-server = 1.1.1.1, 1.0.0.1
 fallback-dns-server = https://1.1.1.1/dns-query, https://dns.google/dns-query
 direct-dns-server = https://dns.alidns.com/dns-query, https://doh.pub/dns-query
 dns-direct-system = false
+
+[Proxy Group]
+# 手动选择已导入的节点；默认跟随首页 PROXY，不自动切换出口。
+# 仅引用本机节点，不在公开配置中包含节点地址或凭据。
+AI = select,PROXY,policy-regex-filter=.*,policy-select-name=PROXY
+
 [Rule]

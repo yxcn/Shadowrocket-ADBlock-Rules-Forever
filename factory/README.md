@@ -24,6 +24,12 @@
 
 列表，手动编写。记录需要屏蔽的域名或 IP。
 
+**manual_ai.txt**
+
+OpenAI / ChatGPT / Claude 的显式域名列表，仅供 `sr_cnip_ad_plus_dns` 使用，生成指向 `AI` 手动组的规则。该组在 `template/sr_head_dns.txt` 定义，默认跟随 `PROXY`，成员来自客户端已导入的节点。
+
+该配置的 `{{manual_ai}}` 放在通用规则之前，`{{manual_proxy_plus_without_ai}}` 从 Plus 列表中排除重复的 AI 域名；其他配置继续使用原来的 `{{manual_proxy_plus}}`，策略不变。此处不使用其他核心的 `GEOSITE` 语法，也不保存私人节点或凭据。
+
 **manual_gfwlist_excludes.txt**
 
 列表，手动编写。记录 gfwlist 误杀的域名或 IP。

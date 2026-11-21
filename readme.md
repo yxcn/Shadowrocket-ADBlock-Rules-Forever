@@ -271,7 +271,11 @@ INTP | Jack of all trades | I use Arch BTW
 - **Plus 域名强制代理**
 - **国内直连 DNS：阿里 / 腾讯 DoH；默认与备用 DNS 保持 Cloudflare / Google**
 
-CapCut 海外域名、`qwen.ai`、`lv-api.ulikecam.com`、`lv-pc-api.ulikecam.com` 的代理例外优先于社区国内名单；ChatGPT、Claude 沿用 Plus 代理规则。共享 CDN 只能按域名判断，不能保证区分每个 App 的全部请求。只有通过域名规则判断为 DIRECT 的查询使用国内 Direct DNS；IP/GeoIP 规则及解析失败回退需单独核对日志。
+本配置包含 `AI` 手动代理组，将 OpenAI / ChatGPT / Claude 的 8 个显式域名交给该组，优先于通用代理与国内域名规则。组内可选择手机已导入的节点，默认 `PROXY` 跟随首页当前代理；如需独立出口，在 `AI` 组内手动选择。公开配置不包含节点凭据，也不会添加住宅节点；住宅或链式节点需要先在客户端配置。其他 Plus 配置继续使用原来的 `Proxy` 策略。
+
+在「配置」页更新 `sr_cnip_ad_plus_dns.conf` 后，核对当前使用的配置及「代理分组」中的 `AI`；仅更新首页节点订阅不会更新此分组。保持全局路由为「配置」，并用新请求日志核对 OpenAI / Claude 域名的命中策略及节点。更新前保留原配置副本，原有本地模块继续独立管理。
+
+CapCut 海外域名、`qwen.ai`、`lv-api.ulikecam.com`、`lv-pc-api.ulikecam.com` 的代理例外优先于社区国内名单。共享 CDN 只能按域名判断，不能保证区分每个 App 的全部请求。只有通过域名规则判断为 DIRECT 的查询使用国内 Direct DNS；IP/GeoIP 规则及解析失败回退需单独核对日志。
 
 为衔接原 Domestic-DNS 覆盖，保留 `tongyi.aliyun.com` 及其子域名、`document-ai-public-prod.oss-cn-beijing.aliyuncs.com` 两项国内直连例外，不扩大到整个阿里云公共域名。
 
