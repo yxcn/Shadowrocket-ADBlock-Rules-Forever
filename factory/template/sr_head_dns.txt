@@ -17,8 +17,8 @@ direct-dns-server = https://dns.alidns.com/dns-query, https://doh.pub/dns-query
 dns-direct-system = false
 
 [Proxy Group]
-# 手动选择已导入的节点；默认跟随首页 PROXY，不自动切换出口。
-# 仅引用本机节点，不在公开配置中包含节点地址或凭据。
-AI = select,PROXY,policy-regex-filter=.*,policy-select-name=PROXY
+# 按名称前缀筛选已导入的节点，由用户在 AI 组中手动选择。
+# 筛选随远程配置更新下发；仅引用本机节点，不包含节点地址或凭据。
+AI = select,policy-regex-filter=^(residen-|Band|US-Band)
 
 [Rule]

@@ -26,7 +26,7 @@
 
 **manual_ai.txt**
 
-OpenAI / ChatGPT / Claude 的显式域名列表，仅供 `sr_cnip_ad_plus_dns` 使用，生成指向 `AI` 手动组的规则。该组在 `template/sr_head_dns.txt` 定义，默认跟随 `PROXY`，成员来自客户端已导入的节点。
+OpenAI / ChatGPT / Claude 的显式域名列表，仅供 `sr_cnip_ad_plus_dns` 使用，生成指向 `AI` 手动组的规则。该组在 `template/sr_head_dns.txt` 定义，使用 `policy-regex-filter=^(residen-|Band|US-Band)` 从客户端已导入的节点中筛选成员，只匹配 `residen-`、`Band` 或 `US-Band` 开头的名称，区分大小写。组内不添加 `PROXY` 或其他不匹配的候选，节点由用户手动选择。筛选条件随生成的远程配置发布，客户端更新配置即可获得，无需在手机上编辑正则。
 
 该配置的 `{{manual_ai}}` 放在通用规则之前，`{{manual_proxy_plus_without_ai}}` 从 Plus 列表中排除重复的 AI 域名；其他配置继续使用原来的 `{{manual_proxy_plus}}`，策略不变。此处不使用其他核心的 `GEOSITE` 语法，也不保存私人节点或凭据。
 
