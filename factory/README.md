@@ -30,15 +30,6 @@ OpenAI / ChatGPT / Claude 的显式域名列表，仅供 `sr_cnip_ad_plus_dns` �
 
 该配置的 `{{manual_ai}}` 放在通用规则之前，`{{manual_proxy_plus_without_ai}}` 从 Plus 列表中排除重复的 AI 域名；其他配置继续使用原来的 `{{manual_proxy_plus}}`，策略不变。此处不使用其他核心的 `GEOSITE` 语法，也不保存私人节点或凭据。
 
-**manual_gfwlist_excludes.txt**
-
-列表，手动编写。记录 gfwlist 误杀的域名或 IP。
-
-**manual_gfwlist.txt**
-
-GFWList 不能无损转换为 SR 规则，所以这里是对 GFWList 的补充。
-
-
 ## 代码及自动生成的文件
 
 **resultant/top50_direct.list** 
@@ -69,14 +60,6 @@ GFWList 不能无损转换为 SR 规则，所以这里是对 GFWList 的补充�
 
 **resultant/gfw.list**
 
-域名列表，由 `gfwlist.py` 自动生成。包含 GFWList 所定义的需要走代理的网站。
+每日从官方 `gfwlist/gfwlist` 下载 AutoProxy 列表，由 `gfwlist.py` 生成带策略的 Shadowrocket 规则。两份模板在手工规则和广告拦截之后、宽泛直连名单之前嵌入该文件。块内先匹配上游 `@@` 例外（DIRECT），再匹配代理条目。
 
-**resultant/gfw_unhandle.log**
-
-运行日志，由 `gfwlist.py` 自动生成。GFWList 不能无损转换为 SR 规则，这里记录着未能转换的 GFWList 规则。
-
-每当该文件发生变化，需要对应修改 `manual_gfwlist.txt` 文件。
-
-**gfwlist.py**
-
-脚本。解译最新版本的 GFWList。
+域名锚点转换为域名后缀；裸主机名保守地限制为精确匹配。协议、路径、通配符和正则表达式保留为 URL 规则。HTTPS 路径规则依赖客户端能看到相应 URL。转换遇到不支持的语法会中止本次构建。旧手工 GFW 补充名单及第三方来源不参与现行发布。

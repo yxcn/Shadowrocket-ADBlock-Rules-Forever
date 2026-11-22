@@ -50,6 +50,9 @@ values['build_time'] = time.strftime("%Y-%m-%d %H:%M:%S")
 
 values['top500_direct'] = getRulesStringFromFile('resultant/top500_direct.list', 'Direct')
 
+with open('resultant/gfw.list', encoding='utf-8') as gfw_file:
+    values['gfwlist'] = gfw_file.read()
+
 values['ad'] = getRulesStringFromFile('resultant/ad.list', 'Reject')
 
 values['manual_direct'] = getRulesStringFromFile('manual_direct.txt', 'Direct')

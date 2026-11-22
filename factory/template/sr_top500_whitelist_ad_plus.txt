@@ -15,6 +15,10 @@
 {{manual_direct}}
 {{manual_proxy}}
 
+# Official GFWList (exceptions first)
+{{gfwlist}}
+# End of GFWList
+
 {{top500_direct}}
 
 DOMAIN-SUFFIX,cn,DIRECT

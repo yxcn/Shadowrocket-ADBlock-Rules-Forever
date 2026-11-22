@@ -19,8 +19,21 @@ def verify():
                 {Path(name + '.conf') for name in CONFIG_NAMES})
     check_files({p.stem for p in (ROOT / 'figure').glob('*.png')}, set(CONFIG_NAMES))
 
+    gfw_rules = (ROOT / 'factory/resultant/gfw.list').read_text(encoding='utf-8')
+    block = '# Official GFWList (exceptions first)\n' + gfw_rules + '\n# End of GFWList'
     for name in CONFIG_NAMES:
         content = (ROOT / (name + '.conf')).read_text(encoding='utf-8')
+        if not gfw_rules.strip() or content.count(block) != 1:
+            raise SystemExit(f'Missing or inconsistent GFWList: {name}')
+        before, after = content.split(block)
+        if name == 'sr_cnip_ad_plus_dns':
+            ordered = 'DOMAIN-SUFFIX,openai.com,AI' in before and 'DOMAIN-SET,' in after
+        else:
+            top500 = (ROOT / 'factory/resultant/top500_direct.list').read_text().splitlines()
+            first_domain = next(line for line in top500 if line and not line.startswith('#'))
+            ordered = f'DOMAIN-SUFFIX,{first_domain},Direct' in after
+        if not ordered:
+            raise SystemExit(f'Incorrect GFWList priority: {name}')
         lines = set(content.lower().splitlines())
         required = {'[general]', '[rule]', 'final,proxy', 'geoip,cn,direct'}
         if name == 'sr_cnip_ad_plus_dns':

@@ -1,123 +1,82 @@
-# -*- coding: utf-8 -*-
+"""Convert the official AutoProxy list into an ordered Shadowrocket rule block."""
 
-#
-# 下载并解析最新版本的 GFWList
-# 对于混合性质的网站，尽量走代理（忽略了所有的@@指令）
-#
-# 从 https://github.com/Johnshall/cn-blocked-domain 中获取GFWList的补充
-# 感谢 https://github.com/Loyalsoldier/cn-blocked-domain
-#
-
-
-import time
-import requests
-import re
 import base64
+import os
+from pathlib import Path
+import re
+import tempfile
+from urllib.request import urlopen
+
+SOURCE = 'https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt'
+OUTPUT = Path(__file__).resolve().parent / 'resultant' / 'gfw.list'
+HOST = re.compile(r'[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*')
+HOST_END = r'(?=[:/?\x23]|$)'
+# This upstream exception has an end anchor but lacks the closing regex delimiter.
+OPEN_EXCEPTION = r'/^https?:\/\/(?=.*?(2x3|ni5|j5o))[a-z0-9.-]+\.xn--ngstr-lra8j\.com$'
 
 
-unhandle_rules = []
+def glob_regex(text, wildcard):
+    return wildcard.join(re.escape(part) for part in text.split('*'))
 
-# ruleType for raw or base64
-def get_rule(rules_url, ruleType='raw'):
-    success = False
-    try_times = 0
-    r = None
-    while try_times < 5 and not success:
-        r = requests.get(rules_url)
-        if r.status_code != 200:
-            time.sleep(1)
-            try_times = try_times + 1
-        else:
-            success = True
-            break
 
-    if not success:
-        raise Exception('error in request %s\n\treturn code: %d' % (rules_url, r.status_code) )
+def url_pattern(body):
+    if body.startswith('/'):
+        if body.endswith('/'):
+            return body[1:-1]
+        if body == OPEN_EXCEPTION:
+            return body[1:]
+        raise ValueError(f'Unterminated regex: {body}')
 
-    if ruleType == 'base64':
-        rule = base64.b64decode(r.text) \
-                .decode("utf-8") \
-                .replace('\\n', '\n')
+    if body.startswith('||'):
+        host_path = body[2:]
+        prefix = r'^[a-zA-Z][a-zA-Z0-9+.-]*://(?:[a-zA-Z0-9-]+\.)*'
+    elif body.startswith(('|http://', '|https://')):
+        scheme, host_path = body[1:].split('://', 1)
+        prefix = '^' + scheme + '://'
     else:
-        rule = r.text
+        raise ValueError(f'Unsupported AutoProxy syntax: {body}')
 
-    return rule
+    host, slash, path = host_path.partition('/')
+    if not re.fullmatch(r'[a-zA-Z0-9.*-]+', host) or any(c in path for c in '^|$'):
+        raise ValueError(f'Unsupported host or path: {body}')
+    return prefix + glob_regex(host, '[a-zA-Z0-9.-]*') + (
+        '/' + glob_regex(path, '.*') if slash else HOST_END)
 
 
-def clear_format(rule):
-    rules = []
-
-    rule = rule.split('\n')
-    for row in rule:
-        row = row.strip()
-
-        # 注释 直接跳过
-        if row == '' or row.startswith('!') or row.startswith('@@') or row.startswith('[AutoProxy'):
+def convert(text):
+    lines = text.splitlines()
+    if not lines or not lines[0].startswith('[AutoProxy '):
+        raise ValueError('Missing AutoProxy header')
+    exceptions, proxies = [], []
+    for raw in lines[1:]:
+        raw = raw.strip()
+        if not raw or raw.startswith('!'):
             continue
+        exception = raw.startswith('@@')
+        body = raw[2:] if exception else raw
+        policy = 'DIRECT' if exception else 'PROXY'
+        if body.startswith('||') and HOST.fullmatch(body[2:].removesuffix('^')):
+            rule = 'DOMAIN-SUFFIX,' + body[2:].removesuffix('^')
+        elif HOST.fullmatch(body):
+            # An unanchored hostname is restricted to that exact host.
+            rule = 'DOMAIN,' + body
+        else:
+            pattern = url_pattern(body)
+            if ',' in pattern or '#' in body:
+                raise ValueError(f'Unsafe configuration delimiter: {body}')
+            re.compile(pattern)
+            rule = 'URL-REGEX,' + pattern
+        (exceptions if exception else proxies).append(rule + ',' + policy)
+    if not proxies or not exceptions:
+        raise ValueError('Incomplete upstream proxy or exception list')
+    return '\n'.join(dict.fromkeys(exceptions + proxies)) + '\n'
 
-        # 清除前缀
-        row = re.sub(r'^\|?https?://', '', row)
-        row = re.sub(r'^\|\|', '', row)
-        row = row.lstrip('.*')
 
-        # 清除后缀
-        row = row.rstrip('/^*')
-
-        rules.append(row)
-
-    return rules
-
-
-def filtrate_rules(rules, excludes=[]):
-    ret = []
-
-    for rule in rules:
-        rule0 = rule
-
-        # only hostname
-        if '/' in rule:
-            split_ret = rule.split('/')
-            rule = split_ret[0]
-
-        if not re.match('^[\w.-]+$', rule):
-            unhandle_rules.append(rule0)
-            continue
-
-        if rule in excludes:
-            continue
-
-        ret.append(rule)
-
-    ret = list( set(ret) )
-    ret.sort()
-
-    return ret
-
-def getURLs(url):
-    r = requests.get(url)
-    return r.text.split("\n")[:-1]
-
-# main
-
-rule = get_rule(rules_url='https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt', ruleType='base64')
-# 从 https://github.com/Johnshall/cn-blocked-domain 中获取GFWList的补充
-rule += get_rule('https://raw.githubusercontent.com/Johnshall/cn-blocked-domain/release/domains.txt')
-
-rules = clear_format(rule)
-
-excludes = []
-with open('manual_gfwlist_excludes.txt', 'r', encoding='utf-8') as f:
-    for line in f.readlines():
-        if line[0] == "#" or line == "\n":
-            continue
-        excludes.append(line.strip())
-
-rules = filtrate_rules(rules, excludes)
-
-rules = list( set(rules) )
-
-open('resultant/gfw.list', 'w', encoding='utf-8') \
-    .write('\n'.join(rules))
-
-open('resultant/gfw_unhandle.log', 'w', encoding='utf-8') \
-    .write('\n'.join(unhandle_rules))
+if __name__ == '__main__':
+    with urlopen(SOURCE, timeout=30) as response:
+        encoded = b''.join(response.read().split())
+    result = convert(base64.b64decode(encoded, validate=True).decode('utf-8'))
+    with tempfile.NamedTemporaryFile(dir=OUTPUT.parent, mode='w', encoding='utf-8',
+                                     delete=False) as pending:
+        pending.write(result)
+    os.replace(pending.name, OUTPUT)
