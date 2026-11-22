@@ -40,6 +40,14 @@ DOMAIN,document-ai-public-prod.oss-cn-beijing.aliyuncs.com,DIRECT
 {{gfwlist}}
 # End of GFWList
 
+# 宽泛直连规则的精确域名例外
+DOMAIN,dw-world.cn,PROXY
+DOMAIN,tranio.cn,PROXY
+DOMAIN,himalaya.com,PROXY
+DOMAIN,journals.sagepub.com,PROXY
+DOMAIN,metatrader5.com,PROXY
+DOMAIN,www.metatrader4.com,PROXY
+
 # 社区域名集由上游维护；更新配置时同时检查远程规则集更新
 DOMAIN-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/ChinaMaxNoIP/ChinaMaxNoIP_Domain.list,DIRECT
 DOMAIN-SUFFIX,cn,DIRECT

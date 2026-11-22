@@ -19,6 +19,13 @@
 {{gfwlist}}
 # End of GFWList
 
+# 宽泛直连规则的精确域名例外
+DOMAIN,dw-world.cn,PROXY
+DOMAIN,tranio.cn,PROXY
+DOMAIN,ebookjapan.yahoo.co.jp,PROXY
+DOMAIN,telecom.economictimes.indiatimes.com,PROXY
+DOMAIN,www3.nhk.or.jp,PROXY
+
 {{top500_direct}}
 
 DOMAIN-SUFFIX,cn,DIRECT
