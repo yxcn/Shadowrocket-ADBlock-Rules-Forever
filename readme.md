@@ -35,10 +35,7 @@
 规则 | 规定代理的网站 | 规定直连的网站
 --- | ----------- | -------------
 [白名单规则 + 去广告 + Plus 代理](#白名单过滤--广告--plus-代理) | 其他网站 + Plus 域名强制代理 | top500 网站中可直连的网站、中国网站
-[白名单规则 + Plus 代理](#白名单过滤--plus-代理) | 其他网站 + Plus 域名强制代理 | top500 网站中可直连的网站、中国网站
-[国内外划分 + 去广告 + Plus 代理](#国内外划分--广告--plus-代理) | 国外网站 + Plus 域名强制代理 | 中国网站
 [国内外划分 + 去广告 + Plus 代理 + DNS 防泄漏](#国内外划分--广告--plus-代理--dns-防泄漏) | 国外网站 + Plus 域名强制代理 | 中国网站
-[国内外划分 + Plus 代理](#国内外划分--plus-代理) | 国外网站 + Plus 域名强制代理 | 中国网站
 
 - 以上所有规则，局域网内请求均直连。
 - 可以下载多个规则切换使用。
@@ -90,7 +87,7 @@ INTP | Jack of all trades | I use Arch BTW
 
 - **你提供了这么多规则，如何选择适合我的？**
 
-> 需要已知境外网站直连时选 Top500 白名单，需要按中国 IP 直连时选国内外划分。带广告过滤的版本另有 DNS Plus 配置，可为 AI 单独选择节点。
+> 需要已知境外网站直连时选 Top500 白名单，需要按中国 IP 直连时选国内外划分。两份配置都过滤广告，DNS Plus 还可为 AI 单独选择节点。
 
 - **你提供了这么多规则，却没有我想要的 o(>.<)o**
 
@@ -148,44 +145,16 @@ INTP | Jack of all trades | I use Arch BTW
 ![二维码](https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/figure/sr_top500_whitelist_ad_plus.png)
 
 
-## 白名单过滤 + Plus 代理
-
-在白名单的基础上，将 Apple / Microsoft / Google / OpenAI / Claude 等 Plus 域名强制走代理。不包含广告过滤。
-
-- 直连：top500 网站中可直连的境外网站、中国网站
-- 代理：默认代理其余的所有境外网站
-- 不包含广告过滤
-- **Plus 域名强制代理**
-
-规则地址：<https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/sr_top500_whitelist_plus.conf>
-
-![二维码](https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/figure/sr_top500_whitelist_plus.png)
-
-
-## 国内外划分 + 广告 + Plus 代理
-
-在国内外划分 + 广告过滤的基础上，将 Apple / Microsoft / Google / OpenAI / Claude 等 Plus 域名强制走代理，适合需要使用 Apple Intelligence、iCloud Private Relay、Microsoft 365、Google、AI 服务的用户。
-
-- 直连：中国网站（GEOIP,CN）
-- 代理：默认代理其余的所有境外网站
-- 包含广告过滤
-- **Plus 域名强制代理**
-
-规则地址：<https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/sr_cnip_ad_plus.conf>
-
-![二维码](https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/figure/sr_cnip_ad_plus.png)
-
-
 ## 国内外划分 + 广告 + Plus 代理 + DNS 防泄漏
 
-在 `sr_cnip_ad_plus` 的基础上，启用 Shadowrocket None/TUN 兼容模式、私有 IP 应答，并接入 [blackmatrix7 ChinaMaxNoIP 社区域名集](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Shadowrocket/ChinaMaxNoIP)。命中国内域名直连规则时优先使用阿里或腾讯 DoH。`always-ip-address = true` 让 Shadowrocket 也解析代理域名，默认和备用的 Cloudflare、Google DoH 地址均带 `#proxy`，随首页当前选择的节点发送查询。
+本配置启用 Shadowrocket None/TUN 兼容模式、私有 IP 应答，并接入 [blackmatrix7 ChinaMaxNoIP 社区域名集](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Shadowrocket/ChinaMaxNoIP)。命中国内域名直连规则时优先使用阿里或腾讯 DoH。`always-ip-address = true` 让 Shadowrocket 也解析代理域名，默认和备用的 Cloudflare、Google DoH 地址均带 `#proxy`，随首页当前选择的节点发送查询。
 
 - 直连：社区国内域名集、`.cn` 后缀及 GEOIP,CN 兜底，受前面的手工代理与广告屏蔽规则约束
 - 代理：默认代理其余的所有境外网站
 - 包含广告过滤
 - **Plus 域名强制代理**
 
-本配置包含 `AI` 手动代理组，将 OpenAI / ChatGPT / Claude 的 8 个显式域名交给该组，优先于通用代理与国内域名规则。组内仅列出手机已导入、名称以 `residen-`、`Band` 或 `US-Band` 开头的节点（区分大小写），筛选表达式为 `^(residen-|Band|US-Band)`。在 `AI` 组内手动选择所需节点；本组不添加 `PROXY` 候选，也不筛减首页的节点列表。使用前需确保至少已导入一个匹配名称的节点。公开配置不包含节点凭据，也不会添加住宅节点；住宅或链式节点需要先在客户端配置。其他 Plus 配置继续使用原来的 `Proxy` 策略。
+本配置包含 `AI` 手动代理组，将 OpenAI / ChatGPT / Claude 的 8 个显式域名交给该组，优先于通用代理与国内域名规则。组内仅列出手机已导入、名称以 `residen-`、`Band` 或 `US-Band` 开头的节点（区分大小写），筛选表达式为 `^(residen-|Band|US-Band)`。在 `AI` 组内手动选择所需节点；本组不添加 `PROXY` 候选，也不筛减首页的节点列表。使用前需确保至少已导入一个匹配名称的节点。公开配置不包含节点凭据，也不会添加住宅节点；住宅或链式节点需要先在客户端配置。Top500 白名单配置使用 `Proxy` 策略。
 
 筛选条件由远程配置统一下发，每日重新构建仍会保留，无需直接编辑手机配置。在「配置」页更新 `sr_cnip_ad_plus_dns.conf` 后，核对当前使用的配置及「代理分组」中的 `AI`；仅更新首页节点订阅不会更新此分组。保持全局路由为「配置」，并用新请求日志核对 OpenAI / Claude 域名的命中策略及节点。更新前保留原配置副本，原有本地模块继续独立管理。
 
@@ -198,20 +167,6 @@ TikTok 接口按 `tiktokv.com`、`tiktokv.eu` 两个域名后缀匹配，已有�
 规则地址：<https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/sr_cnip_ad_plus_dns.conf>
 
 ![二维码](https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/figure/sr_cnip_ad_plus_dns.png)
-
-
-## 国内外划分 + Plus 代理
-
-在国内外划分的基础上，将 Apple / Microsoft / Google / OpenAI / Claude 等 Plus 域名强制走代理。不包含广告过滤。
-
-- 直连：中国网站（GEOIP,CN）
-- 代理：默认代理其余的所有境外网站
-- 不包含广告过滤
-- **Plus 域名强制代理**
-
-规则地址：<https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/sr_cnip_plus.conf>
-
-![二维码](https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/figure/sr_cnip_plus.png)
 
 
 ## 鸣谢
