@@ -2,7 +2,7 @@ name: Build Shadowrocket Rules
 
 on:
   schedule:
-    # 每日8时开始
+    # 北京时间每日 07:00 触发
     - cron:  '0 23 * * *'
 
   push:
@@ -25,12 +25,6 @@ jobs:
 
       - name: Run auto-build.sh
         run: ./factory/auto_build.sh
-
-      - name: Update lazy rules
-        run: |
-          rm lazy.conf lazy_group.conf
-          curl -O https://raw.githubusercontent.com/LOWERTOP/Shadowrocket/main/lazy.conf
-          curl -O https://raw.githubusercontent.com/LOWERTOP/Shadowrocket/main/lazy_group.conf
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4

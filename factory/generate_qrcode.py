@@ -1,32 +1,21 @@
 ﻿# -*- coding: utf-8 -*-
 
-import glob
 import os
 import qrcode
 
-# GitHub Pages base URL (custom domain)
-BASE_URL = 'https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/'
+from publications import CONFIG_NAMES
 
-# Skip these files (not Shadowrocket configs)
-SKIP_FILES = set()
+# GitHub Pages base URL
+BASE_URL = 'https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/'
 
 def main():
     root_dir = os.path.join(os.path.dirname(__file__), '..')
     figure_dir = os.path.join(root_dir, 'figure')
-    # 清理旧二维码，避免已删除配置的残留
-    if os.path.exists(figure_dir):
-        for old_png in glob.glob(os.path.join(figure_dir, '*.png')):
-            os.remove(old_png)
     os.makedirs(figure_dir, exist_ok=True)
 
-    conf_files = sorted(glob.glob(os.path.join(root_dir, '*.conf')))
-
-    for conf_path in conf_files:
-        conf_name = os.path.basename(conf_path)
-        if conf_name in SKIP_FILES:
-            continue
-
-        png_name = conf_name.replace('.conf', '.png')
+    for name in CONFIG_NAMES:
+        conf_name = name + '.conf'
+        png_name = name + '.png'
         png_path = os.path.join(figure_dir, png_name)
 
         url = BASE_URL + conf_name

@@ -2,7 +2,7 @@
 
 ### 试更新公告
 
-由于原作者 [h2y](https://github.com/h2y) 已停止维护 [Shadowrocket-ADBlock-Rules](https://github.com/h2y/Shadowrocket-ADBlock-Rules)，Shadowrocket 再无划分如此细致精美的规则。因此我决定用自己有限的能力和技术对该项目以个人的理解进行更新与维护。**所有规则都会在每天北京时间 8:00 更新发布。**
+由于原作者 [h2y](https://github.com/h2y) 已停止维护 [Shadowrocket-ADBlock-Rules](https://github.com/h2y/Shadowrocket-ADBlock-Rules)，Shadowrocket 再无划分如此细致精美的规则。因此我决定用自己有限的能力和技术对该项目以个人的理解进行更新与维护。**所有规则都会在每天北京时间 07:00 触发构建，验证通过后发布。**
 
 ### 写在前面 —— 请保护好自己
 
@@ -20,41 +20,25 @@
 
 **本规则具有以下特点：**
 
-- 黑名单由最新版 [GFWList](https://github.com/gfwlist/gfwlist) 自动转换；
-- 加入 [Greatfire Analyzer](https://github.com/Loyalsoldier/cn-blocked-domain) 检测到的屏蔽域名；
 - 自动转换最新版本的 `EasyList`, `EasyList China`, `Peter Lowe 广告和隐私跟踪域名`，`乘风规则` 为 SR 规则，全面去除广告且去除重复；
 - 包括自定义的广告过滤规则，针对 iOS 端的网页广告、App 广告和视频广告；
 - 提供多个规则文件供大家自由选择或者自由切换使用；
 - 专门针对 ShadowRocket 开发，可以保证与 SR 的兼容性；
 - 将 [Apple及其CDN域名](https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/apple.china.conf) 进行优化；
 - 方便的快捷指令与自动化联动，每天自动更新规则；
-- 增加使用代理组的懒人配置；
 - 由于世界排名 top 500 网站列表已无法通过无账户/免费方式取得，故原来的 top500 检测方法失效。我已根据旧的 top500 榜单重构了新的 top500 网站连接情况表。**同时，希望大家可以帮助 pull requests 一份最新的 top500 榜单: [格式](https://github.com/Johnshall/Shadowrocket-ADBlock-Rules-Forever/blob/build/factory/resultant/top500_manual.list)**
-- **所有发布的规则都会在每天北京时间 8:00 更新发布**
+- **所有发布的规则都会在每天北京时间 07:00 触发构建，验证通过后发布**
 
 
 ## 规则列表
 
 规则 | 规定代理的网站 | 规定直连的网站
 --- | ----------- | -------------
-[黑名单规则 + 去广告](#黑名单过滤--广告) |  被墙的网站（GFWList） | 正常的网站
-[黑名单规则](#黑名单过滤) |   |
-[白名单规则 + 去广告](#白名单过滤--广告) | 其他网站 | top500 网站中可直连的网站、中国网站
-[白名单规则](#白名单过滤) |   |
 [白名单规则 + 去广告 + Plus 代理](#白名单过滤--广告--plus-代理) | 其他网站 + Plus 域名强制代理 | top500 网站中可直连的网站、中国网站
 [白名单规则 + Plus 代理](#白名单过滤--plus-代理) | 其他网站 + Plus 域名强制代理 | top500 网站中可直连的网站、中国网站
-[国内外划分 + 去广告](#国内外划分--广告) |  国外网站 | 中国网站
 [国内外划分 + 去广告 + Plus 代理](#国内外划分--广告--plus-代理) | 国外网站 + Plus 域名强制代理 | 中国网站
 [国内外划分 + 去广告 + Plus 代理 + DNS 防泄漏](#国内外划分--广告--plus-代理--dns-防泄漏) | 国外网站 + Plus 域名强制代理 | 中国网站
 [国内外划分 + Plus 代理](#国内外划分--plus-代理) | 国外网站 + Plus 域名强制代理 | 中国网站
-[国内外划分](#国内外划分) |   |
-[全局直连 + 去广告](#直连去广告) | / | 全部
-[全局代理 + 去广告](#代理去广告) |  全部 | /
-[回国规则 + 去广告](#回国规则--广告) | 中国网站 | 国外网站
-[回国规则](#回国规则) |   |
-[仅去广告规则](#仅去广告规则) |   |
-[懒人配置](#懒人配置) | 国外网站 | 国内网站
-[懒人配置（含策略组）](#懒人配置-含策略组) | 国外网站 | 国内网站
 
 - 以上所有规则，局域网内请求均直连。
 - 可以下载多个规则切换使用。
@@ -106,7 +90,7 @@ INTP | Jack of all trades | I use Arch BTW
 
 - **你提供了这么多规则，如何选择适合我的？**
 
-> 最常用的规则是黑名单和白名单。区别在于对待 `未知网站` 的不同处理方式，黑名单默认直连，而白名单则默认使用代理。如果你选择恐惧症爆发，那就两个都下载好了，黑白名单切换使用，天下无忧。
+> 需要已知境外网站直连时选 Top500 白名单，需要按中国 IP 直连时选国内外划分。带广告过滤的版本另有 DNS Plus 配置，可为 AI 单独选择节点。
 
 - **你提供了这么多规则，却没有我想要的 o(>.<)o**
 
@@ -150,31 +134,6 @@ INTP | Jack of all trades | I use Arch BTW
 
 ----------------------------------------
 
-## 黑名单过滤 + 广告
-
-黑名单中包含了境外网站中无法访问的那些，对不确定的网站则默认直连。
-
-- 代理：被墙的网站（GFWList）
-- 直连：正常的网站
-- 包含广告过滤
-
-规则地址：<https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/sr_top500_banlist_ad.conf>
-
-![二维码](https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/figure/sr_top500_banlist_ad.png)
-
-## 白名单过滤 + 广告
-
-白名单中包含了境外网站中可以访问的那些，对不确定的网站则默认代理。
-
-- 直连：top500 网站中可直连的境外网站、中国网站
-- 代理：默认代理其余的所有境外网站
-- 包含广告过滤
-
-规则地址：<https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/sr_top500_whitelist_ad.conf>
-
-![二维码](https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/figure/sr_top500_whitelist_ad.png)
-
-
 ## 白名单过滤 + 广告 + Plus 代理
 
 在白名单 + 广告过滤的基础上，将 Apple / Microsoft / Google / OpenAI / Claude 等 Plus 域名强制走代理，适合需要使用 Apple Intelligence、iCloud Private Relay、Microsoft 365、Google、AI 服务的用户。
@@ -189,32 +148,6 @@ INTP | Jack of all trades | I use Arch BTW
 ![二维码](https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/figure/sr_top500_whitelist_ad_plus.png)
 
 
-## 黑名单过滤
-
-现在很多浏览器都自带了广告过滤功能，而广告过滤的规则其实较为臃肿，如果你不需要全局地过滤 App 内置广告和视频广告，可以选择这个不带广告过滤的版本。
-
-- 代理：被墙的网站（GFWList）
-- 直连：正常的网站
-- 不包含广告过滤
-
-规则地址：<https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/sr_top500_banlist.conf>
-
-![二维码](https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/figure/sr_top500_banlist.png)
-
-
-## 白名单过滤
-
-现在很多浏览器都自带了广告过滤功能，而广告过滤的规则其实较为臃肿，如果你不需要全局地过滤 App 内置广告和视频广告，可以选择这个不带广告过滤的版本。
-
-- 直连：top500 网站中可直连的境外网站、中国网站
-- 代理：默认代理其余的所有境外网站
-- 不包含广告过滤
-
-规则地址：<https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/sr_top500_whitelist.conf>
-
-![二维码](https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/figure/sr_top500_whitelist.png)
-
-
 ## 白名单过滤 + Plus 代理
 
 在白名单的基础上，将 Apple / Microsoft / Google / OpenAI / Claude 等 Plus 域名强制走代理。不包含广告过滤。
@@ -227,24 +160,6 @@ INTP | Jack of all trades | I use Arch BTW
 规则地址：<https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/sr_top500_whitelist_plus.conf>
 
 ![二维码](https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/figure/sr_top500_whitelist_plus.png)
-
-
-## 国内外划分 + 广告
-
-国内外划分，对中国网站直连，外国网站代理。包含广告过滤。国外网站总是走代理，对于某些港澳台网站，速度反而会比直连更快。
-
-规则地址：<https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/sr_cnip_ad.conf>
-
-![二维码](https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/figure/sr_cnip_ad.png)
-
-
-## 国内外划分
-
-国内外划分，对中国网站直连，外国网站代理。不包含广告过滤。国外网站总是走代理，对于某些港澳台网站，速度反而会比直连更快。
-
-规则地址：<https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/sr_cnip.conf>
-
-![二维码](https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/figure/sr_cnip.png)
 
 
 ## 国内外划分 + 广告 + Plus 代理
@@ -297,100 +212,6 @@ TikTok 接口按 `tiktokv.com`、`tiktokv.eu` 两个域名后缀匹配，已有�
 规则地址：<https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/sr_cnip_plus.conf>
 
 ![二维码](https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/figure/sr_cnip_plus.png)
-
-
-## 直连去广告
-
-如果你想将 SR 作为 iOS 全局去广告工具，这个规则会对你有所帮助。
-
-- 直连：所有请求
-- 包含广告过滤
-
-规则地址：<https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/sr_direct_banad.conf>
-
-![二维码](https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/figure/sr_direct_banad.png)
-
-
-## 代理去广告
-
-如果你想将 SR 作为 iOS 全局去广告 + 全局翻墙工具，这个规则会对你有所帮助。
-
-- 直连：局域网请求
-- 代理：其余所有请求
-- 包含广告过滤
-
-规则地址：<https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/sr_proxy_banad.conf>
-
-![二维码](https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/figure/sr_proxy_banad.png)
-
-
-## 回国规则
-
-提供给海外华侨使用，可以回到墙内，享受国内的一些互联网服务。
-
-- 直连：国外网站
-- 代理：中国网站
-- 不包含广告过滤
-
-规则地址：<https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/sr_backcn.conf>
-
-![二维码](https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/figure/sr_backcn.png)
-
-
-## 回国规则 + 广告
-
-提供给海外华侨使用，可以回到墙内，享受国内的一些互联网服务。
-
-- 直连：国外网站
-- 代理：中国网站
-- 包含广告过滤
-
-规则地址：<https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/sr_backcn_ad.conf>
-
-![二维码](https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/figure/sr_backcn_ad.png)
-
-
-## 仅去广告规则
-
-仅包含去广告规则，不包含代理/直连规则。用于与其他规则联用。
-
-- 仅包含去广告规则，不包含代理/直连规则。无任何其他配置。
-
-规则地址：<https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/sr_ad_only.conf>
-
-![二维码](https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/figure/sr_ad_only.png)
-
-
-----------------------------------------
-
-以下规则基于 [blackmatrix7/ios_rule_script](https://github.com/blackmatrix7/ios_rule_script) 生成：
-
-## 懒人配置（同步自 [LOWERTOP/Shadowrocket](https://github.com/LOWERTOP/Shadowrocket)）
-
-不折腾，开箱即用。
-
-- 配置简洁
-- 规则覆盖范围广
-- 国内外常用app单独分流
-
-规则地址：<https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/lazy.conf>
-
-![二维码](https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/figure/lazy.png)
-
-
-## 懒人配置-含策略组（同步自 [LOWERTOP/Shadowrocket](https://github.com/LOWERTOP/Shadowrocket)）
-
-不折腾，开箱即用。下载规则后可在 i -> 代理分组 中自行配置。
-
-- 配置简洁
-- 规则覆盖范围广
-- 国内外常用app单独分流
-- 添加自动切换延迟最低节点类型
-- 通过「代理分组」灵活调整流媒体分流策略
-
-规则地址：<https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/lazy_group.conf>
-
-![二维码](https://yxcn.github.io/Shadowrocket-ADBlock-Rules-Forever/figure/lazy_group.png)
 
 
 ## 鸣谢

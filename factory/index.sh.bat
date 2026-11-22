@@ -1,5 +1,6 @@
 #!/bin/bash
-
-python ad.py
-python gfwlist.py
-python build_confs.py
+set -euo pipefail
+export PYTHONDONTWRITEBYTECODE=1
+cd "$(dirname "$0")"
+python3 ad.py
+python3 build_confs.py

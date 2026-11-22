@@ -4,23 +4,7 @@ import re
 import time
 
 
-# confs names in template/ and ../
-# except sr_head and sr_foot
-confs_names = [
-    'sr_top500_banlist_ad',
-    'sr_top500_banlist',
-    'sr_top500_whitelist_ad',
-    'sr_top500_whitelist_ad_plus',
-    'sr_top500_whitelist',
-    'sr_top500_whitelist_plus',
-    'sr_adb',
-    'sr_direct_banad',
-    'sr_proxy_banad',
-    'sr_cnip', 'sr_cnip_ad',
-    'sr_cnip_plus', 'sr_cnip_ad_plus', 'sr_cnip_ad_plus_dns',
-    'sr_backcn', 'sr_backcn_ad',
-    'sr_ad_only'
-]
+from publications import CONFIG_NAMES
 
 
 def getRulesStringFromFile(path, kind, excluded=()):
@@ -64,7 +48,6 @@ values = {}
 
 values['build_time'] = time.strftime("%Y-%m-%d %H:%M:%S")
 
-values['top500_proxy']  = getRulesStringFromFile('resultant/top500_proxy.list', 'Proxy')
 values['top500_direct'] = getRulesStringFromFile('resultant/top500_direct.list', 'Direct')
 
 values['ad'] = getRulesStringFromFile('resultant/ad.list', 'Reject')
@@ -83,18 +66,13 @@ ai_domains = {
 values['manual_proxy_plus_without_ai'] = getRulesStringFromFile(
     'manual_proxy_plus.txt', 'Proxy', excluded=ai_domains)
 
-values['gfwlist'] = getRulesStringFromFile('resultant/gfw.list', 'Proxy') \
-                  + getRulesStringFromFile('manual_gfwlist.txt', 'Proxy')
-
-
 # make confs
-for conf_name in confs_names:
+for conf_name in CONFIG_NAMES:
     file_template = open('template/'+conf_name+'.txt', 'r', encoding='utf-8')
     template = file_template.read()
 
-    if conf_name != 'sr_ad_only':
-        head = str_head_dns if conf_name == 'sr_cnip_ad_plus_dns' else str_head
-        template = head + template + str_foot
+    head = str_head_dns if conf_name == 'sr_cnip_ad_plus_dns' else str_head
+    template = head + template + str_foot
 
     file_output = open('../'+conf_name+'.conf', 'w', encoding='utf-8')
 

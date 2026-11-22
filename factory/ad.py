@@ -20,7 +20,7 @@ rules_url = [
     # 乘风 广告过滤规则
     'https://raw.githubusercontent.com/xinggsf/Adblock-Plus-Rule/master/rule.txt',
     # Peter Lowe 广告和隐私跟踪域名
-    'https://pgl.yoyo.org/adservers/serverlist.php?hostformat=adblockplus;showintro=0',
+    'https://pgl.yoyo.org/adservers/serverlist.php?hostformat=adblockplus&showintro=0&mimetype=plaintext',
 ]
 
 rule = ''
@@ -37,7 +37,7 @@ for rule_url in rules_url:
     try_times = 0
     r = None
     while try_times < 5 and not success:
-        r = requests.get(rule_url)
+        r = requests.get(rule_url, timeout=30)
         if r.status_code != 200:
             time.sleep(1)
             try_times = try_times + 1
@@ -47,6 +47,9 @@ for rule_url in rules_url:
 
     if not success:
         sys.exit('error in request %s\n\treturn code: %d' % (rule_url, r.status_code) )
+
+    if not r.text.lstrip('\ufeff \r\n\t').startswith('[Adblock Plus'):
+        sys.exit('Unexpected ad list format from ' + rule_url)
 
     rule = rule + r.text + '\n'
 
