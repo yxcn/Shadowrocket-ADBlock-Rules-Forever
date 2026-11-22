@@ -11,8 +11,10 @@ bypass-tun = 10.0.0.0/8,100.64.0.0/10,127.0.0.0/8,169.254.0.0/16,172.16.0.0/12,1
 # 等同于 Shadowrocket 设置 -> 代理 -> 代理类型 -> None
 compatibility-mode = 3
 private-ip-answer = true
-dns-server = 1.1.1.1, 1.0.0.1
-fallback-dns-server = https://1.1.1.1/dns-query, https://dns.google/dns-query
+# 由 Shadowrocket 解析代理域名。默认和备用 DoH 都跟随首页当前选择的代理节点。
+always-ip-address = true
+dns-server = https://1.1.1.1/dns-query#proxy, https://dns.google/dns-query#proxy
+fallback-dns-server = https://1.0.0.1/dns-query#proxy, https://8.8.4.4/dns-query#proxy
 direct-dns-server = https://dns.alidns.com/dns-query, https://doh.pub/dns-query
 dns-direct-system = false
 

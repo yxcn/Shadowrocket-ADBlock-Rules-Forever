@@ -263,19 +263,18 @@ INTP | Jack of all trades | I use Arch BTW
 
 ## 国内外划分 + 广告 + Plus 代理 + DNS 防泄漏
 
-在 `sr_cnip_ad_plus` 的基础上，启用 Shadowrocket None/TUN 兼容模式、私有 IP 应答，并接入 [blackmatrix7 ChinaMaxNoIP 社区域名集](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Shadowrocket/ChinaMaxNoIP)。国内域名命中直连规则后使用阿里/腾讯 DoH，其他域名保留 Cloudflare DNS 和 Cloudflare/Google DoH 备用 DNS。
+在 `sr_cnip_ad_plus` 的基础上，启用 Shadowrocket None/TUN 兼容模式、私有 IP 应答，并接入 [blackmatrix7 ChinaMaxNoIP 社区域名集](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Shadowrocket/ChinaMaxNoIP)。命中国内域名直连规则时优先使用阿里或腾讯 DoH。`always-ip-address = true` 让 Shadowrocket 也解析代理域名，默认和备用的 Cloudflare、Google DoH 地址均带 `#proxy`，随首页当前选择的节点发送查询。
 
 - 直连：社区国内域名集、`.cn` 后缀及 GEOIP,CN 兜底，受前面的手工代理与广告屏蔽规则约束
 - 代理：默认代理其余的所有境外网站
 - 包含广告过滤
 - **Plus 域名强制代理**
-- **国内直连 DNS：阿里 / 腾讯 DoH；默认与备用 DNS 保持 Cloudflare / Google**
 
 本配置包含 `AI` 手动代理组，将 OpenAI / ChatGPT / Claude 的 8 个显式域名交给该组，优先于通用代理与国内域名规则。组内仅列出手机已导入、名称以 `residen-`、`Band` 或 `US-Band` 开头的节点（区分大小写），筛选表达式为 `^(residen-|Band|US-Band)`。在 `AI` 组内手动选择所需节点；本组不添加 `PROXY` 候选，也不筛减首页的节点列表。使用前需确保至少已导入一个匹配名称的节点。公开配置不包含节点凭据，也不会添加住宅节点；住宅或链式节点需要先在客户端配置。其他 Plus 配置继续使用原来的 `Proxy` 策略。
 
 筛选条件由远程配置统一下发，每日重新构建仍会保留，无需直接编辑手机配置。在「配置」页更新 `sr_cnip_ad_plus_dns.conf` 后，核对当前使用的配置及「代理分组」中的 `AI`；仅更新首页节点订阅不会更新此分组。保持全局路由为「配置」，并用新请求日志核对 OpenAI / Claude 域名的命中策略及节点。更新前保留原配置副本，原有本地模块继续独立管理。
 
-CapCut 海外域名、`qwen.ai`、`lv-api.ulikecam.com`、`lv-pc-api.ulikecam.com` 的代理例外优先于社区国内名单。共享 CDN 只能按域名判断，不能保证区分每个 App 的全部请求。只有通过域名规则判断为 DIRECT 的查询使用国内 Direct DNS；IP/GeoIP 规则及解析失败回退需单独核对日志。
+TikTok 接口按 `tiktokv.com`、`tiktokv.eu` 两个域名后缀匹配，已有广告拦截优先。它们和 CapCut 海外域名、`qwen.ai`、`lv-api.ulikecam.com`、`lv-pc-api.ulikecam.com` 的代理例外都在社区国内名单之前。共享 CDN 只能按域名判断。仅凭 GEOIP 判为直连的连接可能已使用默认 DNS 完成查询。国内直连 DNS 解析失败时也可回退到经代理的备用 DoH。
 
 为衔接原 Domestic-DNS 覆盖，保留 `tongyi.aliyun.com` 及其子域名、`document-ai-public-prod.oss-cn-beijing.aliyuncs.com` 两项国内直连例外，不扩大到整个阿里云公共域名。
 
