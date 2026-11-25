@@ -1,15 +1,8 @@
-# -*- coding: utf-8 -*-
+"""Extract whole-domain advertising blocks for Shadowrocket."""
 
-#
-# 提取广告规则，并且只提取对全域禁止的那种规则
-#
-
-# 参考 ADB 广告规则格式：https://adblockplus.org/filters
-
-import time
-import sys
-import requests
 import re
+import time
+from pathlib import Path
 
 
 rules_url = [
@@ -23,119 +16,86 @@ rules_url = [
     'https://pgl.yoyo.org/adservers/serverlist.php?hostformat=adblockplus&showintro=0&mimetype=plaintext',
 ]
 
-rule = ''
+RESULTANT = Path(__file__).resolve().parent / 'resultant'
+DOMAIN = re.compile(r'[a-z0-9][-a-z0-9]{0,62}(?:\.[a-z0-9][-a-z0-9]{0,62})*\.[a-z0-9][-a-z0-9]+')
+IPV4 = re.compile(r'\d{1,3}(?:\.\d{1,3}){3}')
 
-# contain both domains and ips
-domains = []
+
+def blocked_host(rule):
+    # Preserve the host-only representations accepted by the existing blocklist.
+    host = re.sub(r'^\|?https?://', '', rule.lower()).removeprefix('||')
+    host = host.lstrip('.*').rstrip('/*').rstrip('^')
+    host = re.sub(r':\d{2,5}$', '', host)
+    if DOMAIN.fullmatch(host) or IPV4.fullmatch(host):
+        return host
+    return None
 
 
-for rule_url in rules_url:
-    print('loading... ' + rule_url)
+def exception_host(rule):
+    # Paths, ports, protocol-specific filters and $options cannot be expressed
+    # as an unconditional exception in this whole-domain list.
+    host = rule.lower().removeprefix('||').removeprefix('*.')
+    host = re.sub(r'(?:\^|/\*|/)$', '', host)
+    if DOMAIN.fullmatch(host) or IPV4.fullmatch(host):
+        return host
+    return None
 
-    # get rule text
-    success = False
-    try_times = 0
-    r = None
-    while try_times < 5 and not success:
-        r = requests.get(rule_url, timeout=30)
-        if r.status_code != 200:
+
+def host_suffixes(host):
+    yield host
+    if not IPV4.fullmatch(host):
+        labels = host.split('.')
+        for index in range(1, len(labels) - 1):
+            yield '.'.join(labels[index:])
+
+
+def extract_domains(lines, ignored=()):
+    blocks = set()
+    exceptions = set()
+    for line in lines:
+        rule = line.strip()
+        if rule.startswith('@@'):
+            host = exception_host(rule[2:])
+            if host:
+                exceptions.add(host)
+        elif rule and not rule.startswith('!') and '$' not in rule and '##' not in rule:
+            host = blocked_host(rule)
+            if host:
+                blocks.add(host)
+
+    # A DOMAIN-SUFFIX block for a parent would also reject an excepted child.
+    # Keep independent sibling blocks and the existing exact local exclusions.
+    blocked_parents = {parent for host in exceptions for parent in host_suffixes(host)}
+    blocks.difference_update(blocked_parents, {host.lower() for host in ignored})
+    return sorted(host for host in blocks if exceptions.isdisjoint(host_suffixes(host)))
+
+
+def download_rules(url):
+    import requests
+
+    print('loading... ' + url)
+    for attempt in range(5):
+        response = requests.get(url, timeout=30)
+        if response.status_code == 200:
+            if not response.text.lstrip('\ufeff \r\n\t').startswith('[Adblock Plus'):
+                raise SystemExit('Unexpected ad list format from ' + url)
+            return response.text
+        if attempt < 4:
             time.sleep(1)
-            try_times = try_times + 1
-        else:
-            success = True
-            break
-
-    if not success:
-        sys.exit('error in request %s\n\treturn code: %d' % (rule_url, r.status_code) )
-
-    if not r.text.lstrip('\ufeff \r\n\t').startswith('[Adblock Plus'):
-        sys.exit('Unexpected ad list format from ' + rule_url)
-
-    rule = rule + r.text + '\n'
-
-# except rules
-ignore = []
-ad_ignore = sys.stdout
-try:
-    if sys.version_info.major == 3:
-        ad_ignore = open('resultant/ad_ignore.list', 'r', encoding='utf-8')
-    else:
-        ad_ignore = open('resultant/ad_ignore.list', 'r')
-except:
-    pass
-for ig in ad_ignore.readlines():
-    if ig[0] != '#' and ig != '\n':
-        ignore.append(ig.strip())
-
-# parse rule
-rule = rule.split('\n')
-for row in rule:
-    row = row.strip()
-    row0 = row
-
-    # 处理广告例外规则
-
-    if row.startswith('@@'):
-        i = 0
-        while i < len(domains):
-            domain = domains[i]
-            if domain in row:
-                del domains[i]
-            else:
-                i = i + 1
-
-        continue
+    raise SystemExit(f'error in request {url}\n\treturn code: {response.status_code}')
 
 
-    # 处理广告黑名单规则
-
-    # 直接跳过
-    if row=='' or row.startswith('!') or "$" in row or "##" in row:
-        continue
-
-    # 清除前缀
-    row = re.sub(r'^\|?https?://', '', row)
-    row = re.sub(r'^\|\|', '', row)
-    row = row.lstrip('.*')
-
-    # 清除后缀
-    row = row.rstrip('/*')
-    if row[-1] == '^':
-        # row = '.'+row
-        row = row.rstrip('^')
-    row = re.sub(r':\d{2,5}$', '', row)  # 清除端口
-
-    # 不能含有的字符
-    if re.search(r'[/^:*]', row):
-        print('ignore: '+row0)
-        continue
-    
-    # 去除 ignore 中的内容
-    if row in ignore:
-        continue
-
-    # 只匹配域名或 IP
-    if re.match(r'^\.?[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})*\.[a-zA-Z0-9][-a-zA-Z0-9]{1,}$', row) or re.match(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$', row):
-        domains.append(row)
-
-print('done.')
+def main():
+    sources = [download_rules(url) for url in rules_url]
+    with (RESULTANT / 'ad_ignore.list').open(encoding='utf-8') as file:
+        ignored = [line.strip() for line in file if line.strip() and not line.startswith('#')]
+    domains = extract_domains((line for source in sources for line in source.splitlines()), ignored)
+    with (RESULTANT / 'ad.list').open('w', encoding='utf-8') as file:
+        file.write('# adblock rules refresh time: ' + time.strftime('%Y-%m-%d %H:%M:%S') + '\n')
+        for host in domains:
+            file.write(host + '\n')
+    print('done.')
 
 
-# write into files
-
-file_ad = sys.stdout
-try:
-    if sys.version_info.major == 3:
-        file_ad = open('resultant/ad.list', 'w', encoding='utf-8')
-    else:
-        file_ad = open('resultant/ad.list', 'w')
-except:
-    pass
-
-file_ad.write('# adblock rules refresh time: ' + time.strftime("%Y-%m-%d %H:%M:%S") + '\n')
-
-domains = list( set(domains) )
-domains.sort()
-
-for item in domains:
-    file_ad.write(item + '\n')
+if __name__ == '__main__':
+    main()
