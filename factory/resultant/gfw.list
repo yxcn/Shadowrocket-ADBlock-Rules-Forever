@@ -1247,6 +1247,7 @@ URL-REGEX,^http://99cn\.info(?=[:/?\x23]|$),PROXY
 DOMAIN-SUFFIX,9bis.com,PROXY
 DOMAIN-SUFFIX,9bis.net,PROXY
 DOMAIN-SUFFIX,9news.com.au,PROXY
+DOMAIN-SUFFIX,aicu.cc,PROXY
 DOMAIN-SUFFIX,livingatlas.arcgis.com,PROXY
 DOMAIN-SUFFIX,basemaps.arcgis.com,PROXY
 DOMAIN-SUFFIX,experience.arcgis.com,PROXY
@@ -1838,6 +1839,7 @@ DOMAIN-SUFFIX,cynscribe.com,PROXY
 DOMAIN-SUFFIX,ifan.cz.cc,PROXY
 DOMAIN-SUFFIX,mike.cz.cc,PROXY
 DOMAIN-SUFFIX,nic.cz.cc,PROXY
+DOMAIN-SUFFIX,danmakus.com,PROXY
 DOMAIN-SUFFIX,duck.ai,PROXY
 DOMAIN-SUFFIX,dh.net,PROXY
 DOMAIN-SUFFIX,divdyn.com,PROXY
@@ -3465,6 +3467,7 @@ DOMAIN-SUFFIX,rutracker.org,PROXY
 URL-REGEX,^http://rxhj\.net(?=[:/?\x23]|$),PROXY
 DOMAIN-SUFFIX,raphael.app,PROXY
 DOMAIN-SUFFIX,rule34.us,PROXY
+DOMAIN-SUFFIX,spacedesk.net,PROXY
 DOMAIN-SUFFIX,singpao.com.hk,PROXY
 DOMAIN-SUFFIX,shanghainationalparty.com,PROXY
 DOMAIN-SUFFIX,soulogic.com,PROXY
